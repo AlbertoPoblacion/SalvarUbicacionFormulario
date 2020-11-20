@@ -1,10 +1,8 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SalvarUbicacionFormulario.Properties" GeneratedClassName="Settings">
+  <Profiles />
   <Settings>
-    <Setting Name="UbicacionesFormularios" Type="Herramientas.EstadoFormulario.ColeccionUbicaciones" Scope="User">
+    <Setting Name="UbicacionesFormulariosSerializadas" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

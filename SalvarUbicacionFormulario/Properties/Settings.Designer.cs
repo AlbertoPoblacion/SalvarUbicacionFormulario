@@ -25,12 +25,13 @@ namespace SalvarUbicacionFormulario.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::Herramientas.EstadoFormulario.ColeccionUbicaciones UbicacionesFormularios {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string UbicacionesFormulariosSerializadas {
             get {
-                return ((global::Herramientas.EstadoFormulario.ColeccionUbicaciones)(this["UbicacionesFormularios"]));
+                return ((string)(this["UbicacionesFormulariosSerializadas"]));
             }
             set {
-                this["UbicacionesFormularios"] = value;
+                this["UbicacionesFormulariosSerializadas"] = value;
             }
         }
     }

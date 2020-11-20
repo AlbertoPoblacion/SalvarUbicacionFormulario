@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
-
+using System.Xml.Serialization;
 using Properties = SalvarUbicacionFormulario.Properties;
 
 namespace Herramientas
@@ -11,7 +13,7 @@ namespace Herramientas
     /// FUnciones para salvar y restaurar la ubicación y tamaño de formularios abiertos en pantalla
     /// </summary>
     /// <remarks>
-    /// Se requiere crear una propiedad en Setting.Settings llamada UbicacionesFormularios, de tipo ColeccionUbicaciones.
+    /// Se requiere crear una propiedad en Setting.Settings llamada UbicacionesFormulariosSerializadas, de tipo String.
     /// </remarks>
     public class EstadoFormulario
     {
@@ -24,7 +26,7 @@ namespace Herramientas
             {
                 int codigoTamPantallaActual = ObtenerCodigoTamPantalla();
 
-                ColeccionUbicaciones cu = Properties.Settings.Default.UbicacionesFormularios ?? new ColeccionUbicaciones();
+                ColeccionUbicaciones cu = Deserializar(Properties.Settings.Default.UbicacionesFormulariosSerializadas) ?? new ColeccionUbicaciones();
                 UbicacionFormulario uf = new UbicacionFormulario();
                 uf.CodigoTamVentana = codigoTamPantallaActual;
                 uf.EstaMaximizado = formulario.WindowState == FormWindowState.Maximized;
@@ -44,7 +46,7 @@ namespace Herramientas
                 cuNueva.Add(uf);
 
                 // Salvar la nueva coleccion
-                Properties.Settings.Default.UbicacionesFormularios = cuNueva;
+                Properties.Settings.Default.UbicacionesFormulariosSerializadas = Serializar(cuNueva);
                 Properties.Settings.Default.Save();
             }
             catch (Exception ex)
@@ -63,7 +65,7 @@ namespace Herramientas
             {
                 int codigoTamPantallaActual = ObtenerCodigoTamPantalla();
 
-                ColeccionUbicaciones cu = Properties.Settings.Default.UbicacionesFormularios;
+                ColeccionUbicaciones cu = Deserializar(Properties.Settings.Default.UbicacionesFormulariosSerializadas);
                 if (cu != null)
                 {
                     string name = ObtenerNombreVentana(form);
@@ -104,6 +106,33 @@ namespace Herramientas
             }
 
             return ccl.ObtenerCodigo();
+        }
+
+        private static string Serializar(ColeccionUbicaciones coleccionUbicaciones)
+        {
+            if (coleccionUbicaciones == null)
+            {
+                return null;
+            }
+
+            XmlSerializer xs = new XmlSerializer(typeof(ColeccionUbicaciones));
+            StringBuilder sb = new StringBuilder();
+            StringWriter sw = new StringWriter(sb);
+            xs.Serialize(sw, coleccionUbicaciones);
+            return sb.ToString();
+        }
+
+        private static ColeccionUbicaciones Deserializar(string textoSerializado)
+        {
+            if (string.IsNullOrEmpty(textoSerializado))
+            {
+                return null;
+            }
+
+            XmlSerializer xs = new XmlSerializer(typeof(ColeccionUbicaciones));
+            StringReader sr = new StringReader(textoSerializado);
+            ColeccionUbicaciones deserializado = (ColeccionUbicaciones)xs.Deserialize(sr);
+            return deserializado;
         }
 
         [Serializable]
